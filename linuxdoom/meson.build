@@ -12,6 +12,7 @@ linuxdoom_srcs = [
   'f_finale.c',
   'f_wipe.c',
   'g_game.c',
+  'i_main.c',
   'i_net.c',
   'i_sound.c',
   'i_system.c',
@@ -64,4 +65,9 @@ linuxdoom_srcs = [
   'wi_stuff.c',
 ]
 
-executable('linuxdoom', linuxdoom_srcs, c_args: ['-DNORMALUNIX', '-DLINUX'])
+cc = meson.get_compiler('c')
+m_dep = cc.find_library('m', required : false)
+x11_dep = dependency('x11')
+xext_dep = dependency('xext')
+
+executable('linuxdoom', linuxdoom_srcs, c_args: ['-DNORMALUNIX', '-DLINUX'], dependencies: [ m_dep, x11_dep, xext_dep ])
