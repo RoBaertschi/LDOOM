@@ -805,11 +805,18 @@ void R_SortVisSprites (void)
 	ds->next = ds+1;
 	ds->prev = ds-1;
     }
-    
+    #ifdef __GNUC__
+    // TODO(robin): LDOOM: ensure this warning is a false positive
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wdangling-pointer"
+    #endif
     vissprites[0].prev = &unsorted;
     unsorted.next = &vissprites[0];
     (vissprite_p-1)->next = &unsorted;
     unsorted.prev = vissprite_p-1;
+    #ifdef __GNUC__
+    #pragma GCC diagnostic pop
+    #endif
     
     // pull the vissprites out by scale
     //best = 0;		// shut up the compiler warning
