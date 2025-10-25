@@ -1,4 +1,4 @@
-linuxdoom_srcs = [
+linuxdoom_srcs = files([
   'doomdef.c',
   'doomstat.c',
   'dstrings.c',
@@ -24,6 +24,7 @@ linuxdoom_srcs = [
   'm_menu.c',
   'm_misc.c',
   'm_random.c',
+  'm_string.c',
   'm_swap.c',
   'p_ceilng.c',
   'p_doors.c',
@@ -63,7 +64,7 @@ linuxdoom_srcs = [
   'st_lib.c',
   'st_stuff.c',
   'wi_stuff.c',
-]
+])
 
 cc = meson.get_compiler('c')
 m_dep = cc.find_library('m', required : false)
@@ -71,3 +72,5 @@ x11_dep = dependency('x11')
 xext_dep = dependency('xext')
 
 executable('linuxdoom', linuxdoom_srcs, c_args: ['-DNORMALUNIX', '-DLINUX'], dependencies: [ m_dep, x11_dep, xext_dep ])
+
+subdir('tests')
