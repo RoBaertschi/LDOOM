@@ -1184,7 +1184,7 @@ int EV_DoDonut(line_t*	line)
 	s2 = getNextSector(s1->lines[0],s1);
 	for (i = 0;i < s2->linecount;i++)
 	{
-	    if ((!s2->lines[i]->flags & ML_TWOSIDED) ||
+	    if (((!s2->lines[i]->flags) & ML_TWOSIDED) ||
 		(s2->lines[i]->backsector == s1))
 		continue;
 	    s3 = s2->lines[i]->backsector;
@@ -1246,6 +1246,7 @@ void P_SpawnSpecials (void)
     if (W_CheckNumForName("texture2") >= 0)
 	episode = 2;
 
+    (void)episode; // TODO(robin): LDOOM: is this variable intended to do something or just useless
     
     // See if -TIMER needs to be used.
     levelTimer = false;
