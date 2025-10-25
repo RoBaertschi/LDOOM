@@ -530,6 +530,7 @@ void M_ReadSaveStrings(void)
 	    continue;
 	}
 	count = read (handle, &savegamestrings[i], SAVESTRINGSIZE);
+	(void)count; // TODO(robin): LDOOM: handle count correctly?
 	close (handle);
 	LoadMenu[i].status = 1;
     }
@@ -676,7 +677,7 @@ void M_SaveGame (int choice)
 //
 //      M_QuickSave
 //
-char    tempstring[80];
+char    tempstring[90];
 
 void M_QuickSaveResponse(int ch)
 {
