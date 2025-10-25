@@ -456,8 +456,8 @@ void G_DoLoadLevel (void)
     // DOOM determines the sky texture to be used
     // depending on the current episode, and the game version.
     if ( (gamemode == commercial)
-	 || ( gamemode == pack_tnt )
-	 || ( gamemode == pack_plut ) )
+	 || ( (int)gamemode == (int)pack_tnt ) // TODO(robin): LDOOM: pack_tnt and pack_plut handling?
+	 || ( (int)gamemode == (int)pack_plut ) )
     {
 	skytexture = R_TextureNumForName ("SKY3");
 	if (gamemap < 12)
@@ -492,8 +492,8 @@ void G_DoLoadLevel (void)
     joyxmove = joyymove = 0; 
     mousex = mousey = 0; 
     sendpause = sendsave = paused = false; 
-    memset (mousebuttons, 0, sizeof(mousebuttons)); 
-    memset (joybuttons, 0, sizeof(joybuttons)); 
+    memset (mousebuttons, 0, sizeof(*mousebuttons)); // TODO(robin): LDOOM: should this be a dereference, looks like it. sizeof(boolean*) was equal to sizeof(boolean) but that is not true anymore because pointers are now 64 bit and boolean is int which is 32 bits
+    memset (joybuttons, 0, sizeof(*joybuttons)); 
 } 
  
  
@@ -760,10 +760,12 @@ void G_Ticker (void)
 //
 void G_InitPlayer (int player) 
 { 
-    player_t*	p; 
+    // TODO(robin): LDOOM: this is unused and probably useless, should this be fully removed?
+
+    // // player_t*	p; 
  
-    // set up the saved info         
-    p = &players[player]; 
+    // // set up the saved info         
+    // p = &players[player]; 
 	 
     // clear everything else to defaults 
     G_PlayerReborn (player); 
@@ -1208,12 +1210,14 @@ void G_DoLoadGame (void)
     gameaction = ga_nothing; 
 	 
     length = M_ReadFile (savename, &savebuffer); 
+    // TODO(robin): LDOOM: length should probably checked for expected size
+    (void)length; // NOTE(robin): LDOOM: discard the returned value, is not used
     save_p = savebuffer + SAVESTRINGSIZE;
     
     // skip the description field 
     memset (vcheck,0,sizeof(vcheck)); 
     sprintf (vcheck,"version %i",VERSION); 
-    if (strcmp (save_p, vcheck)) 
+    if (strcmp ((char*)save_p, vcheck)) 
 	return;				// bad version 
     save_p += VERSIONSIZE; 
 			 
