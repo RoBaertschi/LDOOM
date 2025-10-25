@@ -986,10 +986,6 @@ void WI_drawDeathmatchStats(void)
     int		x;
     int		y;
     int		w;
-    
-    int		lh;	// line height
-
-    lh = WI_SPACINGY;
 
     WI_slamBackground();
     
@@ -1539,7 +1535,7 @@ void WI_loadData(void)
 {
     int		i;
     int		j;
-    char	name[9];
+    char	name[40];
     anim_t*	a;
 
     if (gamemode == commercial)
