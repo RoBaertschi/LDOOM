@@ -488,6 +488,7 @@ W_CacheLumpNum
 	
 	//printf ("cache miss on lump %i\n",lump);
 	ptr = Z_Malloc (W_LumpLength (lump), tag, &lumpcache[lump]);
+	(void)ptr; // TODO(robin): LDOOM: this seems very suspicious but maybe it is also completly useless
 	W_ReadLump (lump, lumpcache[lump]);
     }
     else
