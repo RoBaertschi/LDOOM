@@ -59,6 +59,7 @@
 #include "m_argv.h"
 #include "m_misc.h"
 #include "m_menu.h"
+#include "m_string.h"
 
 #include "i_system.h"
 #include "i_sound.h"
@@ -142,6 +143,15 @@ event_t         events[MAXEVENTS];
 int             eventhead;
 int 		eventtail;
 
+//
+// NextEvent
+// TODO(robin): Docs?
+//
+int NextEvent(int event)
+{
+    event += 1;
+    return event&(MAXEVENTS-1);
+}
 
 //
 // D_PostEvent
@@ -150,7 +160,7 @@ int 		eventtail;
 void D_PostEvent (event_t* ev)
 {
     events[eventhead] = *ev;
-    eventhead = (++eventhead)&(MAXEVENTS-1);
+    eventhead = NextEvent(eventhead);
 }
 
 
@@ -167,7 +177,7 @@ void D_ProcessEvents (void)
 	 && (W_CheckNumForName("map01")<0) )
       return;
 	
-    for ( ; eventtail != eventhead ; eventtail = (++eventtail)&(MAXEVENTS-1) )
+    for ( ; eventtail != eventhead ; eventtail = NextEvent(eventtail) )
     {
 	ev = &events[eventtail];
 	if (M_Responder (ev))
@@ -1119,7 +1129,8 @@ void D_DoomMain (void)
 	// for statistics driver
 	extern  void*	statcopy;                            
 
-	statcopy = (void*)atoi(myargv[p+1]);
+	// statcopy = (void*)atoi(myargv[p+1]);
+        statcopy = (void*)M_StringToIntptr(myargv[p+1], 0);
 	printf ("External statistics registered.\n");
     }
     
