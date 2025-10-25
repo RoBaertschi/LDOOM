@@ -144,23 +144,13 @@ int             eventhead;
 int 		eventtail;
 
 //
-// NextEvent
-// TODO(robin): Docs?
-//
-int NextEvent(int event)
-{
-    event += 1;
-    return event&(MAXEVENTS-1);
-}
-
-//
 // D_PostEvent
 // Called by the I/O functions when input is detected
 //
 void D_PostEvent (event_t* ev)
 {
     events[eventhead] = *ev;
-    eventhead = NextEvent(eventhead);
+    eventhead = D_NextEvent(eventhead);
 }
 
 
@@ -177,7 +167,7 @@ void D_ProcessEvents (void)
 	 && (W_CheckNumForName("map01")<0) )
       return;
 	
-    for ( ; eventtail != eventhead ; eventtail = NextEvent(eventtail) )
+    for ( ; eventtail != eventhead ; eventtail = D_NextEvent(eventtail) )
     {
 	ev = &events[eventtail];
 	if (M_Responder (ev))

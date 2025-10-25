@@ -89,7 +89,8 @@ doomdata_t	reboundstore;
 //
 int NetbufferSize (void)
 {
-    return (int)&(((doomdata_t *)0)->cmds[netbuffer->numtics]); 
+    // TODO(robin): uintptr or intptr?
+    return (int)(uintptr)&(((doomdata_t *)0)->cmds[netbuffer->numtics]); 
 }
 
 //
@@ -107,7 +108,8 @@ unsigned NetbufferChecksum (void)
     return 0;			// byte order problems
 #endif
 
-    l = (NetbufferSize () - (int)&(((doomdata_t *)0)->retransmitfrom))/4;
+    // TODO(robin): uintptr or intptr?
+    l = (NetbufferSize () - (int)(uintptr)&(((doomdata_t *)0)->retransmitfrom))/4;
     for (i=0 ; i<l ; i++)
 	c += ((unsigned *)&netbuffer->retransmitfrom)[i] * (i+1);
 
@@ -461,7 +463,7 @@ void CheckAbort (void)
 	
     I_StartTic ();
     for ( ; eventtail != eventhead 
-	      ; eventtail = (++eventtail)&(MAXEVENTS-1) ) 
+	      ; eventtail = D_NextEvent(eventtail) ) 
     { 
 	ev = &events[eventtail]; 
 	if (ev->type == ev_keydown && ev->data1 == KEY_ESCAPE)

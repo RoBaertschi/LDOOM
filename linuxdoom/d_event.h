@@ -113,6 +113,15 @@ extern	int		eventtail;
 
 extern  gameaction_t    gameaction;
 
+//
+// D_NextEvent
+// TODO(robin): Docs?
+//
+inline static int D_NextEvent(int event)
+{
+    event += 1;
+    return event&(MAXEVENTS-1);
+}
 
 #endif
 //-----------------------------------------------------------------------------
